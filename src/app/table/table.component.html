@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="form">
+    <div class="search">
+      <label for="search">Поиск</label>
+      <input #input id="search" type="text" (keyup)="search(input.value)" />
+    </div>
+    <div class="filter">
+      <div class="filter-data">
+        <input type="text" placeholder="Начальная дата" #dataMin />
+        <input type="text" placeholder="Конечная дата" #dataMax />
+        <button class="btn" (click)="filterDate(dataMin.value, dataMax.value)">
+          Фильтрация по дате
+        </button>
+      </div>
+      <div class="filter-score">
+        <input type="text" placeholder="Минимальный балл" #minScore />
+        <input type="text" placeholder="Максимальный балл" #maxScore />
+        <button
+          class="btn"
+          (click)="filterScore(minScore.value, maxScore.value)"
+        >
+          Фильтрация по баллам
+        </button>
+      </div>
+
+      <button class="btn" (click)="clearFilter()">Сброс фильтров</button>
+    </div>
+    <div class="score">
+      <p>Оценка меньше трех</p>
+      <span class="toggle-bg">
+        <input
+          type="range"
+          id="toggle"
+          min="0"
+          max="1"
+          (change)="range = !range"
+        />
+      </span>
+    </div>
+  </div>
+
+  <div class="table">
+    <h2>Таблица студентов</h2>
+    <table>
+      <tr>
+        <th>
+          Фамилия<img
+            src="../../assets/down-10.png"
+            (click)="sort('surname')"
+          />
+        </th>
+        <th>
+          Имя<img src="../../assets/down-10.png" (click)="sort('name')" />
+        </th>
+        <th>
+          Отчество<img
+            src="../../assets/down-10.png"
+            (click)="sort('patronymic')"
+          />
+        </th>
+        <th>
+          Дата рождения
+          <img src="../../assets/down-10.png" (click)="sort('birthday')" />
+        </th>
+        <th>
+          Средний балл
+          <img src="../../assets/down-10.png" (click)="sort('score')" />
+        </th>
+        <th></th>
+      </tr>
+      <tr
+        *ngFor="let student of students"
+        [ngClass]="{
+          lowScore: student.score < 3 && range,
+          finded: findedStudents.includes(student.id),
+          none: deleteStudents.includes(student.id)
+        }"
+      >
+        <td>{{ student.surname }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.patronymic }}</td>
+        <td>{{ student.birthday }}</td>
+        <td>{{ student.score }}</td>
+        <td>
+          <img
+            src="../../assets/delete-20.png"
+            alt=""
+            class="delete"
+            (click)="showPopUp(student.name, student.surname)"
+          />
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="popUp.isShow" class="popup">
+    <button class="close" (click)="hide()">X</button>
+    <span>{{ popUp.message }} </span>
+    <div>
+      <button class="btn" (click)="deleteStudent(popUp.surname)">Да</button>
+      <button class="btn" (click)="hide()">Нет</button>
+    </div>
+  </div>
+</div>
