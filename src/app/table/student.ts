@@ -12,7 +12,7 @@ class Student {
     _patronymic: string,
     _birthday: string,
     _score: number,
-    _id: number
+    _id: number,
   ) {
     this.name = _name;
     this.surname = _surname;
