@@ -25,6 +25,9 @@ export class TableComponent implements OnInit {
     isShow: false,
     message: "",
   };
+  ngOnInit(): void {
+    console.log("Component initialised!");
+  }
 
   showPopUp(name: string, surname: string): void {
     this.popUp.name = name;
@@ -149,7 +152,7 @@ export class TableComponent implements OnInit {
     if (correctMaxScore > correctMinScore && minScore && maxScore) {
       for (const student of this.students) {
         if (
-          student.score > correctMaxScore &&
+          student.score > correctMaxScore ||
           student.score < correctMinScore
         ) {
           this.deleteStudents.push(student.id);
@@ -166,7 +169,7 @@ export class TableComponent implements OnInit {
     if (correctMaxDate > correctMinDate && dataMin && dataMax) {
       for (const student of this.students) {
         const birthDate = +new Date(student.birthday);
-        if (birthDate > correctMaxDate && birthDate < correctMinDate) {
+        if (birthDate > correctMaxDate || birthDate < correctMinDate) {
           this.deleteStudents.push(student.id);
         }
       }

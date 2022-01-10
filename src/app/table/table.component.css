@@ -134,3 +134,6 @@ table img {
 .search input {
   margin-left: 10px;
 }
+#search{
+  width: 200px;
+}
