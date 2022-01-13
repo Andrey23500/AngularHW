@@ -2,7 +2,13 @@
   <div class="form">
     <div class="search">
       <label for="search">Поиск</label>
-      <input #input id="search" type="text" placeholder="Введите имя и/или фамилию"(keyup)="search(input.value)" />
+      <input
+        #input
+        id="search"
+        type="text"
+        placeholder="Введите имя и/или фамилию"
+        (keyup)="search(input.value)"
+      />
     </div>
     <div class="filter">
       <div class="filter-data">
@@ -67,6 +73,7 @@
           <img src="../../assets/down-10.png" (click)="sort('score')" />
         </th>
         <th></th>
+        <th></th>
       </tr>
       <tr
         *ngFor="let student of students"
@@ -83,14 +90,30 @@
         <td>{{ student.score }}</td>
         <td>
           <img
+            src="../../assets/edit-20.png"
+            alt="edit"
+            (click)="edit = true; idStudent = student.id; showPopUpForm()"
+          />
+        </td>
+        <td>
+          <img
             src="../../assets/delete-20.png"
-            alt=""
+            alt="delete"
             class="delete"
             (click)="showPopUp(student.name, student.surname)"
           />
         </td>
       </tr>
     </table>
+    <button class="btn add" (click)="showPopUpForm(); edit = false">Добавить студента</button>
+  </div>
+  <div *ngIf="popUpForm.isShow" class="popup">
+    <button class="close" (click)="hide()">X</button>
+    <app-form
+      [arrStudents]="students"
+      [edit]="edit"
+      [id]="idStudent"
+    ></app-form>
   </div>
 
   <div *ngIf="popUp.isShow" class="popup">

@@ -1,0 +1,102 @@
+<div class="container">
+  <form novalidate [formGroup]="formModel" (ngSubmit)="added()">
+    <h3 *ngIf="!edit">Добавление студента</h3>
+    <h3 *ngIf="edit">Редактирование студента</h3>
+
+    <div formGroupName="fullName">
+      <label for="surname">Фамилия:</label>
+      <input type="text" id="surname" formControlName="surname" />
+      <span
+        class="error"
+        *ngIf="
+          formModel.get('fullName.surname')?.invalid &&
+          formModel.get('fullName.surname')?.touched
+        "
+      >
+        <span *ngIf="formModel.get('fullName.surname')?.hasError('required')"
+          >Заполните поле</span
+        >
+        <span *ngIf="formModel.get('fullName.surname')?.hasError('pattern')"
+          >Используйте русскую раскладку
+        </span>
+        <span *ngIf="formModel.get('fullName')?.hasError('fullNameValidator')"
+          >Проверьте совпадение с именем
+        </span>
+      </span>
+
+      <label for="name">Имя:</label>
+      <input type="text" id="name" formControlName="name" />
+      <span
+        class="error"
+        *ngIf="
+          formModel.get('fullName.name')?.invalid &&
+          formModel.get('fullName.name')?.touched
+        "
+      >
+        <span *ngIf="formModel.get('fullName.name')?.hasError('required')"
+          >Заполните поле</span
+        >
+        <span *ngIf="formModel.get('fullName.name')?.hasError('pattern')"
+          >Используйте русскую раскладку
+        </span>
+      </span>
+
+      <label for="patronymic">Отчество:</label>
+      <input type="text" id="patronymic" formControlName="patronymic" />
+      <span
+        class="error"
+        *ngIf="
+          formModel.get('fullName.patronymic')?.invalid &&
+          formModel.get('fullName.patronymic')?.touched
+        "
+      >
+        <span *ngIf="formModel.get('fullName.patronymic')?.hasError('required')"
+          >Заполните поле</span
+        >
+        <span *ngIf="formModel.get('fullName.patronymic')?.hasError('pattern')"
+          >Используйте русскую раскладку
+        </span>
+      </span>
+
+      <span
+        class="error"
+        *ngIf="
+          formModel.get('fullName.surname')?.touched &&
+          formModel.get('fullName.name')?.touched &&
+          formModel.get('fullName.patronymic')?.touched &&
+          formModel.get('fullName')?.invalid
+        "
+      >
+        Отчество и фамилия не должны совпадать с именем</span
+      >
+    </div>
+
+    <label for="birthday">Дата рождения:</label>
+    <input type="text" id="birthday" formControlName="birthday" />
+    <span
+      class="error"
+      *ngIf="
+        formModel.get('birthday')?.invalid && formModel.get('birthday')?.touched
+      "
+    >
+      Введите корректную дату
+    </span>
+
+    <label for="score">Средний балл:</label>
+    <input type="text" id="score" formControlName="score" />
+    <span
+      class="error"
+      *ngIf="formModel.get('score')?.invalid && formModel.get('score')?.touched"
+    >
+      <span *ngIf="formModel.get('score')?.hasError('required')"
+        >Заполните поле</span
+      >
+      <span *ngIf="formModel.get('score')?.hasError('pattern')"
+        >Введите оценку в диапазоне 2-5
+      </span>
+    </span>
+
+    <button *ngIf="!edit" type="submit">Добавить</button>
+    <button *ngIf="edit" type="">Изменить</button>
+  </form>
+</div>

@@ -1,0 +1,19 @@
+form {
+  margin: auto;
+  padding: 10px;
+}
+input {
+  display: block;
+  border: 1px solid rgb(83, 79, 79);
+  width: 200px;
+}
+.error {
+  display: block;
+  margin-bottom: 5px;
+  color: red;
+  font-size: 12px;
+}
+
+.invalid {
+  border-radius: red;
+}

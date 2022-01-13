@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Student } from "./student";
 
 @Component({
@@ -6,7 +6,7 @@ import { Student } from "./student";
   templateUrl: "./table.component.html",
   styleUrls: ["./table.component.css"],
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
   students: Array<Student> = [
     new Student("Рябов", "Влад", "Альбертович", "March 12, 2000", 5.0, 1),
     new Student("Марков", "Иван", "Якубович", "March 18, 1999", 3.2, 2),
@@ -15,6 +15,8 @@ export class TableComponent implements OnInit {
     new Student("Сидоров", "Семен", "Олегович", "April 12, 2001", 4.1, 5),
     new Student("Смирнов", "Николай", "Робертович", "March 12, 2001", 2.7, 6),
   ];
+  edit: boolean = false;
+  idStudent: number | undefined;
   range: boolean = false;
   isAskSort: boolean = true;
   findedStudents: Array<number> = [];
@@ -25,9 +27,9 @@ export class TableComponent implements OnInit {
     isShow: false,
     message: "",
   };
-  ngOnInit(): void {
-    console.log("Component initialised!");
-  }
+  popUpForm = {
+    isShow: false,
+  };
 
   showPopUp(name: string, surname: string): void {
     this.popUp.name = name;
@@ -35,8 +37,12 @@ export class TableComponent implements OnInit {
     this.popUp.message = `Удалить студента ${surname} ${name}?`;
     this.popUp.isShow = true;
   }
+  showPopUpForm(): void {
+    this.popUpForm.isShow = true;
+  }
   hide(): void {
     this.popUp.isShow = false;
+    this.popUpForm.isShow = false;
   }
 
   deleteStudent(prop: string): void {
@@ -180,5 +186,4 @@ export class TableComponent implements OnInit {
     this.findedStudents.length = 0;
     this.deleteStudents.length = 0;
   }
-
 }
