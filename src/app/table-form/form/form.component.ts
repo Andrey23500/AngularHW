@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -11,6 +11,7 @@ import { Student } from "../table/student";
 @Component({
   selector: "app-form",
   templateUrl: "./form.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit {
@@ -47,7 +48,7 @@ export class FormComponent implements OnInit {
     score: new FormControl(null, [
       Validators.required,
       Validators.minLength(1),
-      Validators.pattern("[2-5]*[.,]?[0-9]"),
+      Validators.pattern("[2-5]*[.,]?[0-9]*"),
     ]),
   });
 

@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Student } from "./student";
 
 @Component({
   selector: "app-table",
   templateUrl: "./table.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ["./table.component.css"],
 })
 export class TableComponent {

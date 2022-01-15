@@ -142,3 +142,9 @@ table img {
 #search {
   width: 200px;
 }
+.caption {
+  transition: 0.7s ease;
+  -webkit-filter: opacity(70%);
+  filter: opacity(70%);
+  text-decoration: underline;
+}

@@ -12,8 +12,20 @@
     </div>
     <div class="filter">
       <div class="filter-data">
-        <input type="text" placeholder="Начальная дата" #dataMin />
-        <input type="text" placeholder="Конечная дата" #dataMax />
+        <input
+          type="text"
+          placeholder="Начальная дата"
+          #dataMin
+          date
+          [value]="dataMin.placeholder"
+        />
+        <input
+          type="text"
+          placeholder="Конечная дата"
+          #dataMax
+          date
+          [value]="dataMax.placeholder"
+        />
         <button class="btn" (click)="filterDate(dataMin.value, dataMax.value)">
           Фильтрация по дате
         </button>
@@ -49,26 +61,26 @@
     <h2>Таблица студентов</h2>
     <table>
       <tr>
-        <th>
+        <th caption>
           Фамилия<img
             src="../../assets/down-10.png"
             (click)="sort('surname')"
           />
         </th>
-        <th>
+        <th caption>
           Имя<img src="../../assets/down-10.png" (click)="sort('name')" />
         </th>
-        <th>
+        <th caption>
           Отчество<img
             src="../../assets/down-10.png"
             (click)="sort('patronymic')"
           />
         </th>
-        <th>
+        <th caption>
           Дата рождения
           <img src="../../assets/down-10.png" (click)="sort('birthday')" />
         </th>
-        <th>
+        <th caption>
           Средний балл
           <img src="../../assets/down-10.png" (click)="sort('score')" />
         </th>
@@ -83,11 +95,11 @@
           none: deleteStudents.includes(student.id)
         }"
       >
-        <td>{{ student.surname }}</td>
-        <td>{{ student.name }}</td>
-        <td>{{ student.patronymic }}</td>
+        <td>{{ student.surname | capitalize }}</td>
+        <td>{{ student.name | capitalize }}</td>
+        <td>{{ student.patronymic | capitalize }}</td>
         <td>{{ student.birthday }}</td>
-        <td>{{ student.score }}</td>
+        <td>{{ student.score | round: 2 }}</td>
         <td>
           <img
             src="../../assets/edit-20.png"
@@ -105,7 +117,9 @@
         </td>
       </tr>
     </table>
-    <button class="btn add" (click)="showPopUpForm(); edit = false">Добавить студента</button>
+    <button class="btn add" (click)="showPopUpForm(); edit = false">
+      Добавить студента
+    </button>
   </div>
   <div *ngIf="popUpForm.isShow" class="popup">
     <button class="close" (click)="hide()">X</button>
