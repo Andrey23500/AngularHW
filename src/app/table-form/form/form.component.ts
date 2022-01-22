@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -6,6 +6,8 @@ import {
   ValidationErrors,
   Validators,
 } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { OffLineService } from "../services/off-line.service";
 import { Student } from "../table/student";
 
 @Component({
@@ -15,9 +17,27 @@ import { Student } from "../table/student";
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit {
-  @Input() arrStudents: Array<Student> = [];
-  @Input() edit: boolean = false;
-  @Input() id: number | undefined;
+  arrStudents: Array<Student> = [];
+  edit: boolean = false;
+  id: number | undefined;
+  highScore = false;
+
+  constructor(
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    private service: OffLineService,
+  ) {
+    this.arrStudents = service.getStudents();
+    this.edit = activatedRoute.snapshot.url[0].path === "editStudent";
+    this.id = activatedRoute.snapshot.params["id"];
+    if (this.edit) {
+      if (this.id) {
+        this.checkHighScore();
+        this.showInputs(this.id);
+      }
+    }
+  }
+  ngOnInit(): void {}
 
   formModel = new FormGroup({
     fullName: new FormGroup(
@@ -83,7 +103,7 @@ export class FormComponent implements OnInit {
         score: this.formModel.value.score,
         id: this.arrStudents.length + 1,
       };
-      this.arrStudents.push(newStudent);
+      this.service.addStudent(newStudent);
     }
   }
 
@@ -111,9 +131,16 @@ export class FormComponent implements OnInit {
     }
   }
 
+  checkHighScore(): void {
+    if (this.id) {
+      if (this.arrStudents[this.id - 1].score === 5) {
+        this.highScore = true;
+      }
+    }
+  }
   showInputs(id: number): void {
     for (const student of this.arrStudents) {
-      if (student.id === id) {
+      if (+student.id === +id) {
         this.formModel.get("fullName.name")?.setValue(student.name);
         this.formModel.get("fullName.surname")?.setValue(student.surname);
         this.formModel.get("fullName.patronymic")?.setValue(student.patronymic);
@@ -122,16 +149,12 @@ export class FormComponent implements OnInit {
       }
     }
   }
-  ngOnInit(): void {
-    if (this.id) {
-      this.showInputs(this.id);
-    }
-  }
   added(): void {
     if (this.edit) {
       this.editStudent();
     } else {
       this.addNewStudent();
     }
+    this.router.navigate([""]);
   }
 }

@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { OffLineService } from "../services/off-line.service";
 import { Student } from "./student";
 
 @Component({
@@ -8,16 +10,10 @@ import { Student } from "./student";
   styleUrls: ["./table.component.css"],
 })
 export class TableComponent {
-  students: Array<Student> = [
-    new Student("Рябов", "Влад", "Альбертович", "March 12, 2000", 5.0, 1),
-    new Student("Марков", "Иван", "Якубович", "March 18, 1999", 3.2, 2),
-    new Student("Петров", "Максим", "Иванович", "March 12, 2002", 2.3, 3),
-    new Student("Владов", "Марк", "Петрович", "March 12, 1997", 3.7, 4),
-    new Student("Сидоров", "Семен", "Олегович", "April 12, 2001", 4.1, 5),
-    new Student("Смирнов", "Николай", "Робертович", "March 12, 2001", 2.7, 6),
-  ];
-  edit: boolean = false;
-  idStudent: number | undefined;
+  students: Array<Student> = [];
+  constructor(public router: Router, private service: OffLineService) {
+    this.students = service.getStudents();
+  }
   range: boolean = false;
   isAskSort: boolean = true;
   findedStudents: Array<number> = [];
@@ -28,9 +24,6 @@ export class TableComponent {
     isShow: false,
     message: "",
   };
-  popUpForm = {
-    isShow: false,
-  };
 
   showPopUp(name: string, surname: string): void {
     this.popUp.name = name;
@@ -38,19 +31,12 @@ export class TableComponent {
     this.popUp.message = `Удалить студента ${surname} ${name}?`;
     this.popUp.isShow = true;
   }
-  showPopUpForm(): void {
-    this.popUpForm.isShow = true;
-  }
   hide(): void {
     this.popUp.isShow = false;
-    this.popUpForm.isShow = false;
   }
 
   deleteStudent(prop: string): void {
-    const index = this.students.findIndex((n) => n.surname === prop);
-    if (index !== -1) {
-      this.students.splice(index, 1);
-    }
+    this.service.delStudent(prop);
     this.popUp.isShow = false;
   }
 

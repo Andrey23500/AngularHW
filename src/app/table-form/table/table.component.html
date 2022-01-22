@@ -104,7 +104,7 @@
           <img
             src="../../assets/edit-20.png"
             alt="edit"
-            (click)="edit = true; idStudent = student.id; showPopUpForm()"
+            [routerLink]="['editStudent', student.id]"
           />
         </td>
         <td>
@@ -117,17 +117,7 @@
         </td>
       </tr>
     </table>
-    <button class="btn add" (click)="showPopUpForm(); edit = false">
-      Добавить студента
-    </button>
-  </div>
-  <div *ngIf="popUpForm.isShow" class="popup">
-    <button class="close" (click)="hide()">X</button>
-    <app-form
-      [arrStudents]="students"
-      [edit]="edit"
-      [id]="idStudent"
-    ></app-form>
+    <button class="btn add" routerLink="addStudent">Добавить студента</button>
   </div>
 
   <div *ngIf="popUp.isShow" class="popup">

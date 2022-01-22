@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+h2 {
+  font-size: 150px;
+  text-align: center;
+  color: #f8e391;
+  margin-bottom: 30px;
+}
+p {
+  text-align: center;
+  color: #f8e391;
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+.btn {
+  display: block;
+  font-size: 18px;
+  text-align: center;
+  background-color: #bcebdd;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
