@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -8,7 +13,9 @@ import {
 } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { OffLineService } from "../services/off-line.service";
+import { OnLineService } from "../services/on-line.service";
 import { Student } from "../table/student";
+import { DATA_SERVICE } from "../token";
 
 @Component({
   selector: "app-form",
@@ -20,24 +27,30 @@ export class FormComponent implements OnInit {
   arrStudents: Array<Student> = [];
   edit: boolean = false;
   id: number | undefined;
-  highScore = false;
+  highScore: string = "";
+  isServer: boolean = false;
 
   constructor(
+    @Inject(DATA_SERVICE) private service: OffLineService | OnLineService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
-    private service: OffLineService,
   ) {
-    this.arrStudents = service.getStudents();
     this.edit = activatedRoute.snapshot.url[0].path === "editStudent";
     this.id = activatedRoute.snapshot.params["id"];
-    if (this.edit) {
-      if (this.id) {
-        this.checkHighScore();
-        this.showInputs(this.id);
-      }
+    if (activatedRoute.snapshot.queryParams["debug"] === "true") {
+      this.isServer = true;
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.service.getStudents().subscribe((data) => {
+      this.arrStudents = data;
+      if (this.edit) {
+        if (this.id) {
+          this.showInputs(this.id);
+        }
+      }
+    });
+  }
 
   formModel = new FormGroup({
     fullName: new FormGroup(
@@ -110,9 +123,9 @@ export class FormComponent implements OnInit {
   editStudent(): void {
     if (this.id) {
       for (const student of this.arrStudents) {
-        if (student.id === this.id) {
+        if (+student.id === +this.id) {
           if (this.formModel.valid) {
-            const formValues: Student = {
+            const ediStudent: Student = {
               name: this.formModel.value.fullName.name,
               surname: this.formModel.value.fullName.surname,
               patronymic: this.formModel.value.fullName.patronymic,
@@ -120,24 +133,13 @@ export class FormComponent implements OnInit {
               score: this.formModel.value.score,
               id: this.id,
             };
-            student.name = formValues.name;
-            student.surname = formValues.surname;
-            student.patronymic = formValues.patronymic;
-            student.birthday = formValues.birthday;
-            student.score = formValues.score;
+            this.service.editStudent(this.id, ediStudent);
           }
         }
       }
     }
   }
 
-  checkHighScore(): void {
-    if (this.id) {
-      if (this.arrStudents[this.id - 1].score === 5) {
-        this.highScore = true;
-      }
-    }
-  }
   showInputs(id: number): void {
     for (const student of this.arrStudents) {
       if (+student.id === +id) {
@@ -146,6 +148,7 @@ export class FormComponent implements OnInit {
         this.formModel.get("fullName.patronymic")?.setValue(student.patronymic);
         this.formModel.get("birthday")?.setValue(student.birthday);
         this.formModel.get("score")?.setValue(student.score);
+        break;
       }
     }
   }
@@ -155,6 +158,10 @@ export class FormComponent implements OnInit {
     } else {
       this.addNewStudent();
     }
-    this.router.navigate([""]);
+    if (this.isServer) {
+      this.router.navigate([""], { queryParams: { debug: this.isServer } });
+    } else {
+      this.router.navigate([""]);
+    }
   }
 }

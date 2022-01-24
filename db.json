@@ -1,0 +1,36 @@
+{
+  "students": [
+    {
+      "name": "Влад",
+      "surname": "Марков",
+      "patronymic": "Альбертович",
+      "birthday": "March 12, 2000",
+      "score": "3.2",
+      "id": 1
+    },
+    {
+      "name": "Иван",
+      "surname": "Рябов",
+      "patronymic": "Якубовичччч",
+      "birthday": "March 12, 1997",
+      "score": "5",
+      "id": 2
+    },
+    {
+      "name": "вппав",
+      "surname": "Петров",
+      "patronymic": "Иванович",
+      "birthday": "March 12, 2000",
+      "score": "3.7",
+      "id": 3
+    },
+    {
+      "name": "Марк",
+      "surname": "Владов",
+      "patronymic": "Петрович",
+      "birthday": "March 12, 1997",
+      "score": "5",
+      "id": 4
+    }
+  ]
+}

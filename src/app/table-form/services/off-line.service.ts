@@ -1,8 +1,10 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
 import { Student } from "../table/student";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class OffLineService {
   students: Array<Student> = [
@@ -14,19 +16,27 @@ export class OffLineService {
     new Student("Смирнов", "Николай", "Робертович", "March 12, 2001", 2.7, 6),
   ];
 
-  getStudents(): Student[] {
-    return this.students;
+  getStudents(): Observable<Student[]> {
+    return of(this.students);
   }
-  delStudent(prop: string): void{
-    const index = this.students.findIndex((n) => n.surname === prop);
+  delStudent(id: number): void {
+    const index = this.students.findIndex((n) => n.id === id);
     if (index !== -1) {
       this.students.splice(index, 1);
     }
   }
-  addStudent(prop: Student): void{
-    this.students.push(prop);
+  addStudent(student: Student): void {
+    this.students.push(student);
   }
-  constructor() {
-    console.log("service");
-   }
+  editStudent(id: number, editStudent: Student): void {
+    for (let student of this.students) {
+      if (student.id === id) {
+        console.log(editStudent);
+        student = editStudent;
+      }
+    }
+  }
+  constructor(public http: HttpClient) {
+    console.log("OffLine service");
+  }
 }

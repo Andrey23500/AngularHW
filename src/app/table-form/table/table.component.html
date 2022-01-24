@@ -105,6 +105,7 @@
             src="../../assets/edit-20.png"
             alt="edit"
             [routerLink]="['editStudent', student.id]"
+            [queryParams]="{ debug: isServer }"
           />
         </td>
         <td>
@@ -112,19 +113,25 @@
             src="../../assets/delete-20.png"
             alt="delete"
             class="delete"
-            (click)="showPopUp(student.name, student.surname)"
+            (click)="showPopUp(student.name, student.surname, student.id)"
           />
         </td>
       </tr>
     </table>
-    <button class="btn add" routerLink="addStudent">Добавить студента</button>
+    <button
+      class="btn add"
+      [routerLink]="['addStudent']"
+      [queryParams]="{ debug: isServer }"
+    >
+      Добавить студента
+    </button>
   </div>
 
   <div *ngIf="popUp.isShow" class="popup">
     <button class="close" (click)="hide()">X</button>
     <span>{{ popUp.message }} </span>
     <div>
-      <button class="btn" (click)="deleteStudent(popUp.surname)">Да</button>
+      <button class="btn" (click)="deleteStudent(popUp.id)">Да</button>
       <button class="btn" (click)="hide()">Нет</button>
     </div>
   </div>

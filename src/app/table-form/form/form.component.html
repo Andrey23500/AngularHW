@@ -92,7 +92,7 @@
     </div>
     <div class="item">
       <label for="score">Средний балл:</label>
-      <input type="text" id="score" formControlName="score" />
+      <input type="text" id="score" formControlName="score"  [(ngModel)]="highScore"/>
       <span
         class="error"
         *ngIf="
@@ -108,7 +108,7 @@
       </span>
     </div>
     <button *ngIf="!edit" class="btn" type="submit">Добавить</button>
-    <button *ngIf="edit" class="btn" type="" [disabled]="highScore">
+    <button *ngIf="edit" class="btn" type="submit" [disabled]="highScore === '5'">
       Изменить
     </button>
   </form>

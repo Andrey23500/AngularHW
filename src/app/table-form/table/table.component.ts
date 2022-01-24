@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { Router } from "@angular/router";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { OffLineService } from "../services/off-line.service";
+import { OnLineService } from "../services/on-line.service";
+import { DATA_SERVICE } from "../token";
 import { Student } from "./student";
 
 @Component({
@@ -9,11 +16,23 @@ import { Student } from "./student";
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ["./table.component.css"],
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
   students: Array<Student> = [];
-  constructor(public router: Router, private service: OffLineService) {
-    this.students = service.getStudents();
+  constructor(
+    @Inject(DATA_SERVICE) private service: OffLineService | OnLineService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+  ) {
+    if (activatedRoute.snapshot.queryParams["debug"] === "true") {
+      this.isServer = true;
+    }
   }
+  ngOnInit(): void {
+    this.service.getStudents().subscribe((data) => {
+      this.students = data;
+    });
+  }
+  isServer: boolean = false;
   range: boolean = false;
   isAskSort: boolean = true;
   findedStudents: Array<number> = [];
@@ -23,11 +42,13 @@ export class TableComponent {
     surname: "",
     isShow: false,
     message: "",
+    id: -1,
   };
 
-  showPopUp(name: string, surname: string): void {
+  showPopUp(name: string, surname: string, id: number): void {
     this.popUp.name = name;
     this.popUp.surname = surname;
+    this.popUp.id = id;
     this.popUp.message = `Удалить студента ${surname} ${name}?`;
     this.popUp.isShow = true;
   }
@@ -35,8 +56,8 @@ export class TableComponent {
     this.popUp.isShow = false;
   }
 
-  deleteStudent(prop: string): void {
-    this.service.delStudent(prop);
+  deleteStudent(id: number): void {
+    this.service.delStudent(id);
     this.popUp.isShow = false;
   }
 
