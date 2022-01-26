@@ -6,7 +6,7 @@ export interface AppState {
   students: StudentsState;
 }
 
-export const appReducers: ActionReducerMap<AppState> = {
+export const appReducers: any = {
   students: studentsReducer
 };
 
