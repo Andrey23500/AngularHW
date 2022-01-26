@@ -10,21 +10,20 @@ import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { StudentsEffects } from "./store/effects/srudents.effects";
 import { appReducers } from "./store/state";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NotFoundPageComponent,
-  ],
+  declarations: [AppComponent, NotFoundPageComponent],
   imports: [
     BrowserModule,
     routing,
     TableFormModule,
     EffectsModule.forRoot([StudentsEffects]),
-StoreDevtoolsModule.instrument(),
-StoreModule.forRoot(appReducers),
+    StoreDevtoolsModule.instrument(),
+    StoreModule.forRoot(appReducers),
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,5 +1,4 @@
 import { initialStudentsState, StudentsState } from "./students.state";
-import { ActionReducerMap } from "@ngrx/store";
 import { studentsReducer } from "./reducers/students.reducer";
 
 export interface AppState {
